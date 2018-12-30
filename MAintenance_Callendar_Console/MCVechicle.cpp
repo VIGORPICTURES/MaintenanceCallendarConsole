@@ -6,7 +6,8 @@
 #include <string>
 #include "dirWorks.h"
 #include "MCEvent.h"
-#include<limits>
+#include "boost/date_time/gregorian/gregorian.hpp"
+//#include <limits>
 
 extern void errorBoxConsole(std::wstring title, std::wstring msg);
 
