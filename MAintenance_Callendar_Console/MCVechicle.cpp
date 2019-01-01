@@ -7,7 +7,11 @@
 #include "dirWorks.h"
 #include "MCEvent.h"
 #include "boost/date_time/gregorian/gregorian.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
 //#include <limits>
+
+namespace boostDate = boost::gregorian;
+namespace boostTime = boost::posix_time;
 
 extern void errorBoxConsole(std::wstring title, std::wstring msg);
 
@@ -27,7 +31,11 @@ MCVechicle::MCVechicle()
 	wmemset(vechicleBasicDataS.licensePlate, '\0', LICENSEPLATE_SIZE);
 	vechicleBasicDataS.weight			= 0;
 	vechicleBasicDataS.actualMileage = 0;
+	//------------------------------------old data gathering
 	memset(&vechicleBasicDataS.techExamDate,0,sizeof(vechicleBasicDataS.techExamDate));
+	//------------------------------------/old data gathering
+	//vechicleBasicDataS.techExamDateB = boostDate::day_clock::local_day();
+	vechicleBasicDataS.techExamTimeB = boostTime::second_clock::local_time();
 	vechicleBasicDataS.techExamMileage = 0;
 	vechicleBasicDataS.lastEventID = 0;
 	memset(vechicleBasicDataS.fullPath, L'\0', MAX_PATH);
@@ -41,7 +49,7 @@ MCVechicle::~MCVechicle()
 {
 }
 
-int MCVechicle::firstSetup()
+int MCVechicle::firstSetupConsole()
 {
 	wprintf(L"\n-------------------------------------------------------");
 	wprintf(L"\n| Adding new Vechicle.                                |");
@@ -67,7 +75,10 @@ int MCVechicle::firstSetup()
 	std::cin >> vechicleBasicDataS.actualMileage;
 	wprintf(L"\n| Next tech exam [km]:               ");
 	std::cin >> vechicleBasicDataS.techExamMileage;
+	//------------------------------------old data gathering
+	/*
 	wprintf(L"\n| Next tech exam [date](DD/MM/RRRR): ");
+		
 	std::wstring tempdate;
 	std::wcin.ignore();
 	std::getline(std::wcin, tempdate);
@@ -87,6 +98,17 @@ int MCVechicle::firstSetup()
 	it_pos2++;
 	tempstr.assign(tempdate.begin() + it_pos2, tempdate.end()); //year
 	vechicleBasicDataS.techExamDate.tm_year = (stoi(tempstr) - 1900);
+	*/
+	//------------------------------------/old data gathering
+	wprintf(L"\n| Next tech exam [date](RRRR/MM/DD): ");
+	std::string tempdateB;
+	std::wcin.ignore();
+	std::getline(std::cin, tempdateB);
+	//vechicleBasicDataS.techExamDateB = boost::gregorian::from_string(tempdateB);
+	//boost ptime from std string without hours and minutes
+	tempdateB += " 00:00:00.000";
+	vechicleBasicDataS.techExamTimeB = boostTime::time_from_string(tempdateB);
+
 	/*
 	tempstr.assign(tempdate.begin(), tempdate.begin() + it_pos1); //days
 	vechicleBasicDataS.techExamDate.tm_mday = stoi(tempstr);
@@ -99,7 +121,7 @@ int MCVechicle::firstSetup()
 	vechicleBasicDataS.techExamDate.tm_year = (stoi(tempstr) - 1900);
 	*/
 	//place for creating first event - Creation of Vechicle
-
+	showValues();
 	return 0;
 }
 
@@ -113,6 +135,8 @@ void MCVechicle::showValues()
 	}
 	wprintf(L"\n weight: %d", vechicleBasicDataS.weight);
 	wprintf(L"\n actualMileage: %d", vechicleBasicDataS.actualMileage);
+	//------------------------------------old data show
+	/*
 	wprintf(L"\n techExamDate: %d / %d / %d / %d / %d / %d",
 		vechicleBasicDataS.techExamDate.tm_year,
 		vechicleBasicDataS.techExamDate.tm_mon,
@@ -120,6 +144,17 @@ void MCVechicle::showValues()
 		vechicleBasicDataS.techExamDate.tm_hour,
 		vechicleBasicDataS.techExamDate.tm_min,
 		vechicleBasicDataS.techExamDate.tm_sec);
+	*/
+	//------------------------------------/old data show
+	
+	//std::string tempStr(boostDate::to_iso_extended_string(vechicleBasicDataS.techExamDateB));
+	std::string tempStr = boostTime::to_simple_string(vechicleBasicDataS.techExamTimeB);
+	tempStr.resize(20);
+	printf("\n techExamDate: %s", tempStr.c_str());
+
+	//printf("\n techExamDate: %s", std::string(boost::gregorian::to_iso_extended_string(vechicleBasicDataS.techExamDateB)).c_str());
+
+
 	wprintf(L"\n techExamMileage: %d", vechicleBasicDataS.techExamMileage);
 	wprintf(L"\n lastEventID: %d",vechicleBasicDataS.lastEventID);
 	//std::cout << "\n vechicleType: " << vechicleBasicDataS.vechicleType; //currently not in use

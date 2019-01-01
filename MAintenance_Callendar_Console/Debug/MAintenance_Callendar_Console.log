@@ -1,3 +1,8 @@
-﻿LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/FORCE' specification
+﻿  MCVechicle.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  Main.cpp
+  MCDataBase.cpp
+LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/FORCE' specification
 CfgFile.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
   MAintenance_Callendar_Console.vcxproj -> C:\Users\Admin\documents\visual studio 2015\Projects\MAintenance_Callendar_Console\Debug\MAintenance_Callendar_Console.exe

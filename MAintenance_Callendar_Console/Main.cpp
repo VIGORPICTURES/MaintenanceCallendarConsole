@@ -13,6 +13,9 @@
 #include "dirWorks.h"
 #include "setList.h"
 
+#include "boost/date_time/gregorian/gregorian.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
+
 //boost test
 
 
@@ -211,7 +214,7 @@ int addNewVechicleConsole(MCDataBase & dB)
 	errno_t Err = 0;
 	if (dB.checkIfValid())
 	{
-		dB.currentVechicle.firstSetup();
+		dB.currentVechicle.firstSetupConsole();
 		std::wstring tempPath;
 		tempPath.assign(dB.bD.path);
 		tempPath += L"\\";
@@ -471,7 +474,14 @@ int main()
 
 	case 9: //DEBUG
 	{
-		
+		boost::posix_time::ptime ptimetest1;
+		ptimetest1 = boost::posix_time::second_clock::local_time();
+
+		boost::posix_time::time_duration ptimedurationtest1;
+		ptimedurationtest1 = boost::posix_time::hours(1);
+		std::cout << "\n ptimetest1      : " << ptimetest1;
+		ptimetest1 = ptimetest1 + ptimedurationtest1;
+		std::cout << "\n ptimetest1 after: " << ptimetest1;
 		//setList testob1;
 		//std::wstring savePath = L"D:\\T13\\setList.txt";
 		//std::wstring testPath = L"D:\\TEST\\4";
